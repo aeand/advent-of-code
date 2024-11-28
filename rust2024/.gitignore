@@ -1,0 +1,6 @@
+# rust specific
+target
+[Cc]argo.lock
+
+# file specific
+main
