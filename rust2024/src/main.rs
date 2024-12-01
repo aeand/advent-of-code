@@ -37,6 +37,8 @@ fn day1a() {
         }
     }
 
+    println!("Day 1 A: {}", distance_counter);
+
     // 29310557 too high
     // 1273683 too low
     // 1579939 right on
