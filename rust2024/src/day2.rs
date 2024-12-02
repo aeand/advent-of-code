@@ -18,10 +18,9 @@ pub fn day2a() {
     let mut sorted_list: Vec<i32> = list.clone();
 
     sorted_list.sort();
+    let matching = list.iter().zip(&sorted_list).filter(|&(a, b)| a == b).count() == list.len();
 
-    let matching = list.iter().zip(&sorted_list).filter(|&(a, b)| a == b).count();
-
-    if matching == list.len() {
+    if matching {
       let mut previous_i = list[0];
       for (index, i) in list.iter().enumerate() {
         if index == 0 {
@@ -38,9 +37,9 @@ pub fn day2a() {
     }
     else {
       sorted_list.reverse();
-      let matching = list.iter().zip(sorted_list).filter(|&(a, b)| *a == b).count();
+      let matching = list.iter().zip(sorted_list).filter(|&(a, b)| *a == b).count() == list.len();
 
-      if matching == list.len() {
+      if matching {
         let mut previous_i = list[0];
         for (index, i) in list.iter().enumerate() {
           if index == 0 {
