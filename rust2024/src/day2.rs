@@ -71,7 +71,7 @@ pub fn day2a() {
 }
 
 pub fn day2b() {
-  let s = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day2.txt");
+  let s = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day2test.txt");
   if s.is_err() {
     println!("input returned error");
     return;
@@ -82,67 +82,122 @@ pub fn day2b() {
     .split("\n")
     .clone();
 
-  let mut counter = 0;
+  let mut score = 0;
 
   for row in input {
-    let mut is_row_valid = 0;
-    let list: Vec<i32> = row.split(" ").map(|s| s.parse().unwrap()).collect();
-    let mut sorted_list: Vec<i32> = list.clone();
+    println!("{}", row);
+    let mut levels: Vec<i32> = row.split(" ").map(|s| s.parse().unwrap()).collect();
 
-    sorted_list.sort();
+    let mut error_counter = 0;
+    let mut direction = 0;
 
-    let matching = list.iter().zip(&sorted_list).filter(|&(a, b)| a == b).count();
+    // get general direction of levels
+    for (i, level) in levels.iter().enumerate() {
+      if i + 1 == levels.len() {
+        break;
+      }
 
-    if matching == list.len() || matching == list.len() - 1 {
-      is_row_valid += list.len() - matching;
+      if levels[i + 1] < *level {
+        direction -= 1;
+      }
+      else if levels[i + 1] > *level {
+        direction += 1;
+      }
+    }
 
-      let mut previous_i = list[0];
-      for (index, i) in list.iter().enumerate() {
-        if index == 0 {
+    if direction == 0 {
+      continue;
+    }
+
+    let mut indexes_of_bad_levels: Vec<usize> = vec![];
+    // check for errors in the levels
+    if direction > 0 {
+      for (i, level) in levels.iter().enumerate() {
+        if i + 1 == levels.len() {
+          break;
+        }
+
+        if levels[i+1] == *level {
+          indexes_of_bad_levels.insert(0, i);
           continue;
         }
-
-        if i - previous_i <= 3 && previous_i != *i {
-          previous_i = *i;
-        }
-        else {
-          is_row_valid += 1;
+        else if levels[i+1] - *level > 3 || levels[i+1] - *level < 1 {
+          indexes_of_bad_levels.insert(0, i);
+          continue;
         }
       }
     }
     else {
-      sorted_list.reverse();
-      let matching = list.iter().zip(sorted_list).filter(|&(a, b)| *a == b).count();
-
-      if matching == list.len() || matching == list.len() - 1 {
-        is_row_valid += list.len() - matching;
-
-        if matching == list.len() {
-          let mut previous_i = list[0];
-          for (index, i) in list.iter().enumerate() {
-            if index == 0 {
-              continue;
-            }
-
-            if previous_i - i <= 3 && previous_i != *i {
-              previous_i = *i;
-            }
-            else {
-              is_row_valid += 1;
-            }
-          }
+      for (i, level) in levels.iter().enumerate() {
+        if i + 1 == levels.len() {
+          break;
         }
-        else {
-          is_row_valid += 1;
+
+        if levels[i+1] == *level {
+          indexes_of_bad_levels.insert(0, i);
+          continue;
+        }
+        else if *level - levels[i+1] > 3 || *level - levels[i+1] < 1 {
+          indexes_of_bad_levels.insert(0, i);
+          continue;
         }
       }
     }
 
-    if is_row_valid < 2 {
-      counter += 1;
+    println!("{}", indexes_of_bad_levels.len());
+
+    if indexes_of_bad_levels.len() == 1 {
+      levels.remove(indexes_of_bad_levels[0]);
+    }
+    else if indexes_of_bad_levels.len() > 1 {
+      error_counter = 10;
+    }
+
+    if direction > 0 {
+      for (i, level) in levels.iter().enumerate() {
+        if i + 1 == levels.len() {
+          break;
+        }
+
+        if levels[i+1] == *level {
+          error_counter += 1;
+          continue;
+        }
+        else if levels[i+1] - *level > 3 || levels[i+1] - *level < 1 {
+          error_counter += 1;
+          continue;
+        }
+      }
+    }
+    else {
+      for (i, level) in levels.iter().enumerate() {
+        if i + 1 == levels.len() {
+          break;
+        }
+
+        if levels[i+1] == *level {
+          error_counter += 1;
+          continue;
+        }
+        else if *level - levels[i+1] > 3 || *level - levels[i+1] < 1 {
+          error_counter += 1;
+          continue;
+        }
+      }
+    }
+
+    for level in levels {
+      print!("{} ", level);
+    }
+    println!("");
+
+    if error_counter < 2 {
+      println!("VALID");
+      score += 1;
     }
   }
 
   // 680 too high
-  println!("Day 2 A: {counter}");
+  // 374 too high
+  println!("Day 2 B: {score}");
 }
