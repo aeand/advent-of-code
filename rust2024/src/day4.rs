@@ -12,8 +12,8 @@ pub fn day4a() {
     let mut rows_reverted: Vec<&str> = input.split("\n").collect();
     rows_reverted.reverse();
     for row in rows_reverted {
-      let chars: Vec<char> = row.chars().collect();
-      columns = format!("{}{}", columns, chars[i].to_string());
+      let row_chars: Vec<char> = row.chars().collect();
+      columns = format!("{}{}", columns, row_chars[i].to_string());
     }
 
     if !(i+1 == size) {
@@ -43,44 +43,44 @@ pub fn day4a() {
 }
 
 fn check_top_diagonal(input: Vec<&str>, size: usize) -> String {
-  let mut result: String = "".to_string();
+  let mut all_diagonals: String = "".to_string();
 
   for x in 0..size {
-    let mut stri = "".to_string();
+    let mut diagonal = "".to_string();
 
     for y in 0..size {
       if y > size-1 || x+y > size-1 {
         break;
       }
 
-      let ch: Vec<char> = input[y].chars().collect();
-      stri = format!("{}{}", stri, ch[x+y].to_string());
+      let chars: Vec<char> = input[y].chars().collect();
+      diagonal = format!("{}{}", diagonal, chars[x+y].to_string());
     }
 
-    if stri.len() >= 4 {
-      stri = format!("{}{}", stri, "\n");
-      result = format!("{}{}", result, stri);
+    if diagonal.len() >= 4 {
+      diagonal = format!("{}{}", diagonal, "\n");
+      all_diagonals = format!("{}{}", all_diagonals, diagonal);
     }
   }
 
   for x in 0..size {
-    let mut stri = "".to_string();
+    let mut diagonal = "".to_string();
     for y in 0..x+1 {
       if x-y > x {
         break;
       }
 
-      let ch: Vec<char> = input[y].chars().collect();
-      stri = format!("{}{}", stri, ch[x-y].to_string());
+      let chars: Vec<char> = input[y].chars().collect();
+      diagonal = format!("{}{}", diagonal, chars[x-y].to_string());
     }
 
-    if stri.len() >= 4 {
-      stri = format!("{}{}", stri, "\n");
-      result = format!("{}{}", result, stri);
+    if diagonal.len() >= 4 {
+      diagonal = format!("{}{}", diagonal, "\n");
+      all_diagonals = format!("{}{}", all_diagonals, diagonal);
     }
   }
 
-  return result;
+  return all_diagonals;
 }
 
 fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
@@ -122,4 +122,14 @@ fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
   }
 
   return result;
+}
+
+pub fn day4b() {
+  let input = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day4.txt").unwrap();
+
+  // get diagonals in one direction
+  // find indexes of mas
+  // take the 'a' index
+  // find 3 char string on that index. aka the diagonal in the other direction over 'a'
+  // find match in that string on the same index as previous match
 }
