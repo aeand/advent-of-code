@@ -85,7 +85,7 @@ pub fn day2b() {
   let mut score = 0;
 
   for row in input {
-    println!("{}", row);
+    //println!("{}", row);
     let mut levels: Vec<i32> = row.split(" ").map(|s| s.parse().unwrap()).collect();
 
     let mut error_counter = 0;
@@ -144,7 +144,7 @@ pub fn day2b() {
       }
     }
 
-    println!("{}", indexes_of_bad_levels.len());
+    //println!("{}", indexes_of_bad_levels.len());
 
     if indexes_of_bad_levels.len() == 1 {
       levels.remove(indexes_of_bad_levels[0]);
@@ -187,12 +187,12 @@ pub fn day2b() {
     }
 
     for level in levels {
-      print!("{} ", level);
+      //print!("{} ", level);
     }
-    println!("");
+    //println!("");
 
     if error_counter < 2 {
-      println!("VALID");
+      //println!("VALID");
       score += 1;
     }
   }

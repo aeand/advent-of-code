@@ -21,10 +21,6 @@ pub fn day4a() {
     }
   }
 
-  for row in columns.split("\n") {
-    println!("{row}");
-  }
-
   matches += columns.matches("XMAS").count() + columns.matches("SAMX").count();
 
   // diagonal
@@ -32,22 +28,21 @@ pub fn day4a() {
 
   let rows: Vec<&str> = input.split("\n").collect();
   let size: usize = rows.len();
-  diagonals = format!("{}{}", diagonals, check_diagonal(rows, size));
+  diagonals = format!("{}{}", diagonals, check_top_diagonal(rows, size));
 
   let mut rows_reversed: Vec<&str> = input.split("\n").collect();
   rows_reversed.reverse();
-  diagonals = format!("{}{}", diagonals, check_diagonal(rows_reversed, size-1));
+  diagonals = format!("{}{}", diagonals, check_bottom_diagonal(rows_reversed, size));
 
   matches += diagonals.matches("XMAS").count() + diagonals.matches("SAMX").count();
 
   // 2688 too low
   // 2716 too lows
+  // 2718 right on
   println!("Day 4 A: {}", matches);
 }
 
-fn check_diagonal(input: Vec<&str>, size: usize) -> String {
-  println!("--- RAN FUNCTION ---");
-
+fn check_top_diagonal(input: Vec<&str>, size: usize) -> String {
   let mut result: String = "".to_string();
 
   for x in 0..size {
@@ -64,12 +59,10 @@ fn check_diagonal(input: Vec<&str>, size: usize) -> String {
 
     if stri.len() >= 4 {
       stri = format!("{}{}", stri, "\n");
-      println!("{stri}");
       result = format!("{}{}", result, stri);
     }
   }
 
-  println!("--- OTHER DIRECTION ---");
   for x in 0..size {
     let mut stri = "".to_string();
     for y in 0..x+1 {
@@ -83,11 +76,50 @@ fn check_diagonal(input: Vec<&str>, size: usize) -> String {
 
     if stri.len() >= 4 {
       stri = format!("{}{}", stri, "\n");
-      println!("{stri}");
       result = format!("{}{}", result, stri);
     }
   }
 
-  println!("--- DONE ---");
+  return result;
+}
+
+fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
+  let mut result: String = "".to_string();
+
+  for x in 1..size {
+    let mut stri = "".to_string();
+
+    for y in 0..size {
+      if y > size-1 || x+y > size-1 {
+        break;
+      }
+
+      let ch: Vec<char> = input[y].chars().collect();
+      stri = format!("{}{}", stri, ch[x+y].to_string());
+    }
+
+    if stri.len() >= 4 {
+      stri = format!("{}{}", stri, "\n");
+      result = format!("{}{}", result, stri);
+    }
+  }
+
+  for x in 0..size-1 {
+    let mut stri = "".to_string();
+    for y in 0..x+1 {
+      if x-y > x {
+        break;
+      }
+
+      let ch: Vec<char> = input[y].chars().collect();
+      stri = format!("{}{}", stri, ch[x-y].to_string());
+    }
+
+    if stri.len() >= 4 {
+      stri = format!("{}{}", stri, "\n");
+      result = format!("{}{}", result, stri);
+    }
+  }
+
   return result;
 }
