@@ -41,6 +41,7 @@ pub fn day4a() {
   matches += diagonals.matches("XMAS").count() + diagonals.matches("SAMX").count();
 
   // 2688 too low
+  // 2716 too lows
   println!("Day 4 A: {}", matches);
 }
 
