@@ -66,122 +66,105 @@ pub fn day2b(path: &str) {
   let result = std::fs::read_to_string(path).unwrap();
   let input = result.split("\n").clone();
 
-  let mut score = 0;
+  let mut safe_levels = 0;
 
   for row in input {
-    //println!("{}", row);
-    let mut levels: Vec<i32> = row.split(" ").map(|s| s.parse().unwrap()).collect();
-
-    let mut error_counter = 0;
     let mut direction = 0;
+    let mut is_unsafe = false;
+    let mut incorrect_indexes: Vec<usize> = vec![];
 
-    // get general direction of levels
+    let mut levels: Vec<i32> = vec![];
+    for a in row.split(" ") {
+      levels.insert(levels.len(), a.parse::<i32>().unwrap());
+    }
+
     for (i, level) in levels.iter().enumerate() {
-      if i + 1 == levels.len() {
-        break;
-      }
+      let j = (i+1).clamp(0, levels.len()-1);
 
-      if levels[i + 1] < *level {
-        direction -= 1;
+      if level < &levels[j] {
+        if direction != 0 && direction < 0 {
+          is_unsafe = true;
+          incorrect_indexes.insert(incorrect_indexes.len(), i);
+        }
+
+        if levels[j] - level > 3 {
+          is_unsafe = true;
+          incorrect_indexes.insert(incorrect_indexes.len(), i);
+        }
+
+        direction = (direction + 2).clamp(-1, 1);
       }
-      else if levels[i + 1] > *level {
-        direction += 1;
+      else if level > &levels[j] {
+        if direction != 0 && direction > 0 {
+          is_unsafe = true;
+          incorrect_indexes.insert(incorrect_indexes.len(), i);
+        }
+
+        if level - levels[j] > 3 {
+          is_unsafe = true;
+          incorrect_indexes.insert(incorrect_indexes.len(), i);
+        }
+
+        direction = (direction - 2).clamp(-1, 1);
+      }
+      else if i != j {
+          is_unsafe = true;
+          incorrect_indexes.insert(incorrect_indexes.len(), i);
       }
     }
 
-    if direction == 0 {
+    if is_unsafe {
+      is_unsafe = false;
+      direction = 0;
+
+      let mut levels_changed: Vec<i32> = vec![];
+      for (index, a) in row.split(" ").enumerate() {
+        if index != incorrect_indexes[0] {
+          levels_changed.insert(levels_changed.len(), a.parse().unwrap());
+        }
+      }
+
+      for (k, level_changed) in levels_changed.iter().enumerate() {
+        let l = (k+1).clamp(0, levels_changed.len()-1);
+
+        if level_changed < &levels_changed[l] {
+          if direction != 0 && direction < 0 {
+            is_unsafe = true;
+          }
+
+          if levels_changed[l] - level_changed > 3 {
+            is_unsafe = true;
+          }
+
+          direction = (direction + 2).clamp(-1, 1);
+        }
+        else if level_changed > &levels_changed[l] {
+          if direction != 0 && direction > 0 {
+            is_unsafe = true;
+          }
+
+          if level_changed - levels_changed[l] > 3 {
+            is_unsafe = true;
+          }
+
+          direction = (direction - 2).clamp(-1, 1);
+        }
+        else if k != l {
+          is_unsafe = true;
+        }
+
+      }
+    }
+
+    if is_unsafe {
       continue;
     }
 
-    let mut indexes_of_bad_levels: Vec<usize> = vec![];
-    // check for errors in the levels
-    if direction > 0 {
-      for (i, level) in levels.iter().enumerate() {
-        if i + 1 == levels.len() {
-          break;
-        }
-
-        if levels[i+1] == *level {
-          indexes_of_bad_levels.insert(0, i);
-          continue;
-        }
-        else if levels[i+1] - *level > 3 || levels[i+1] - *level < 1 {
-          indexes_of_bad_levels.insert(0, i);
-          continue;
-        }
-      }
-    }
-    else {
-      for (i, level) in levels.iter().enumerate() {
-        if i + 1 == levels.len() {
-          break;
-        }
-
-        if levels[i+1] == *level {
-          indexes_of_bad_levels.insert(0, i);
-          continue;
-        }
-        else if *level - levels[i+1] > 3 || *level - levels[i+1] < 1 {
-          indexes_of_bad_levels.insert(0, i);
-          continue;
-        }
-      }
-    }
-
-    //println!("{}", indexes_of_bad_levels.len());
-
-    if indexes_of_bad_levels.len() == 1 {
-      levels.remove(indexes_of_bad_levels[0]);
-    }
-    else if indexes_of_bad_levels.len() > 1 {
-      error_counter = 10;
-    }
-
-    if direction > 0 {
-      for (i, level) in levels.iter().enumerate() {
-        if i + 1 == levels.len() {
-          break;
-        }
-
-        if levels[i+1] == *level {
-          error_counter += 1;
-          continue;
-        }
-        else if levels[i+1] - *level > 3 || levels[i+1] - *level < 1 {
-          error_counter += 1;
-          continue;
-        }
-      }
-    }
-    else {
-      for (i, level) in levels.iter().enumerate() {
-        if i + 1 == levels.len() {
-          break;
-        }
-
-        if levels[i+1] == *level {
-          error_counter += 1;
-          continue;
-        }
-        else if *level - levels[i+1] > 3 || *level - levels[i+1] < 1 {
-          error_counter += 1;
-          continue;
-        }
-      }
-    }
-
-    for level in levels {
-      //print!("{} ", level);
-    }
-    //println!("");
-
-    if error_counter < 2 {
-      //println!("VALID");
-      score += 1;
-    }
+    safe_levels += 1;
   }
 
   // 680 too high
   // 374 too high
-  println!("Day 2 B: {score}");
+  // 344 too low
+  println!("Day 2 B: {safe_levels}");
 }
