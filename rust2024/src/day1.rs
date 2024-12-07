@@ -1,8 +1,6 @@
 pub fn day1a(path: &str) {
   let result = std::fs::read_to_string(path).unwrap();
-  let input = result
-      .split("\n")
-      .clone();
+  let input = result.split("\n").clone();
 
   let mut list_one: Vec<i32> = std::vec![];
   let mut list_two: Vec<i32> = std::vec![];
@@ -41,9 +39,7 @@ pub fn day1a(path: &str) {
 
 pub fn day1b(path: &str) {
   let result = std::fs::read_to_string(path).unwrap();
-  let input = result
-      .split("\n")
-      .clone();
+  let input = result.split("\n").clone();
 
   let mut list_one: Vec<i32> = std::vec![];
   let mut list_two: Vec<i32> = std::vec![];

@@ -1,14 +1,6 @@
 pub fn day2a(path: &str) {
-  let s = std::fs::read_to_string(path);
-  if s.is_err() {
-    println!("input returned error");
-    return;
-  }
-
-  let result = s.unwrap();
-  let input = result
-    .split("\n")
-    .clone();
+  let result = std::fs::read_to_string(path).unwrap();
+  let input = result.split("\n").clone();
 
   let mut counter = 0;
 
@@ -71,16 +63,8 @@ pub fn day2a(path: &str) {
 }
 
 pub fn day2b(path: &str) {
-  let s = std::fs::read_to_string(path);
-  if s.is_err() {
-    println!("input returned error");
-    return;
-  }
-
-  let result = s.unwrap();
-  let input = result
-    .split("\n")
-    .clone();
+  let result = std::fs::read_to_string(path).unwrap();
+  let input = result.split("\n").clone();
 
   let mut score = 0;
 
