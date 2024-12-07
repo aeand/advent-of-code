@@ -1,5 +1,5 @@
-pub fn day2a() {
-  let s = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day2.txt");
+pub fn day2a(path: &str) {
+  let s = std::fs::read_to_string(path);
   if s.is_err() {
     println!("input returned error");
     return;
@@ -70,8 +70,8 @@ pub fn day2a() {
   println!("Day 2 A: {counter}");
 }
 
-pub fn day2b() {
-  let s = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day2test.txt");
+pub fn day2b(path: &str) {
+  let s = std::fs::read_to_string(path);
   if s.is_err() {
     println!("input returned error");
     return;

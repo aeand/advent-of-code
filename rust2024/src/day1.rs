@@ -1,5 +1,5 @@
-pub fn day1a() {
-  let result = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day1.txt").unwrap();
+pub fn day1a(path: &str) {
+  let result = std::fs::read_to_string(path).unwrap();
   let input = result
       .split("\n")
       .clone();
@@ -39,8 +39,8 @@ pub fn day1a() {
   // 1579939 right on
 }
 
-pub fn day1b() {
-  let result = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day1.txt").unwrap();
+pub fn day1b(path: &str) {
+  let result = std::fs::read_to_string(path).unwrap();
   let input = result
       .split("\n")
       .clone();

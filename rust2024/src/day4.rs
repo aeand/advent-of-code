@@ -1,5 +1,5 @@
-pub fn day4a() {
-  let input = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day4.txt").unwrap();
+pub fn day4a(path: &str) {
+  let input = std::fs::read_to_string(path).unwrap();
   let size: usize = input.split("\n").count();
   let mut matches = 0;
 
@@ -124,8 +124,8 @@ fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
   return all_diagonals;
 }
 
-pub fn day4b() {
-  let input = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day4.txt").unwrap();
+pub fn day4b(path: &str) {
+  let input = std::fs::read_to_string(path).unwrap();
 
   let mut x_mas_counter = 0;
 

@@ -1,7 +1,7 @@
 use regex::Regex;
 
-pub fn day3a() {
-  let input = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day3.txt").unwrap();
+pub fn day3a(path: &str) {
+  let input = std::fs::read_to_string(path).unwrap();
   let re = Regex::new(r"mul\([\d]+,[\d]+\)").unwrap();
   let regex = re.find_iter(&input);
 
@@ -18,8 +18,8 @@ pub fn day3a() {
   println!("Day 3 A: {}", score);
 }
 
-pub fn day3b() {
-  let input = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day3.txt").unwrap();
+pub fn day3b(path: &str) {
+  let input = std::fs::read_to_string(path).unwrap();
   let re = Regex::new(r"mul\([\d]+,[\d]+\)").unwrap();
   let regex = re.find_iter(&input);
 
