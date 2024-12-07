@@ -94,8 +94,8 @@ fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
         break;
       }
 
-      let ch: Vec<char> = input[y].chars().collect();
-      diagonal = format!("{}{}", diagonal, ch[x+y].to_string());
+      let chars: Vec<char> = input[y].chars().collect();
+      diagonal = format!("{}{}", diagonal, chars[x+y].to_string());
     }
 
     if diagonal.len() >= 4 {
@@ -104,7 +104,7 @@ fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
     }
   }
 
-  for x in 0..size {
+  for x in 0..size-1 {
     let mut diagonal = "".to_string();
     for y in 0..x+1 {
       if x-y > x {
