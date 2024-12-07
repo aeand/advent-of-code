@@ -127,56 +127,42 @@ fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
 pub fn day4b() {
   let input = std::fs::read_to_string("/home/antan/Projects/advent-of-code/rust2024/input/day4.txt").unwrap();
 
-  let mut rows: Vec<&str> = input.split("\n").collect();
-  let size: usize = rows.len();
-  let mut all_diagonals: String = "".to_string();
+  let mut x_mas_counter = 0;
 
-  // get diagonals in one direction
-  for x in 0..size {
-    let mut diagonal = "".to_string();
-
-    for y in 0..size {
-      if y > size-1 || x+y > size-1 {
-        break;
-      }
-
-      let chars: Vec<char> = rows[y].chars().collect();
-      diagonal = format!("{}{}", diagonal, chars[x+y].to_string());
-    }
-
-    if diagonal.len() >= 4 {
-      diagonal = format!("{}{}", diagonal, "\n");
-      all_diagonals = format!("{}{}", all_diagonals, diagonal);
+  let mut coordinate_system: Vec<(i32, i32, char)> = vec![];
+  for (y, row) in input.split("\n").enumerate() {
+    for (x, c) in row.chars().enumerate() {
+      coordinate_system.insert(coordinate_system.len(), (x.try_into().unwrap(), y.try_into().unwrap(), c));
     }
   }
 
-  rows.reverse();
+  let all_a: Vec<(i32, i32, char)> = coordinate_system.iter().map(|v| *v).filter(|v| v.2 == 'A').collect();
 
-  for x in 0..size {
-    let mut diagonal = "".to_string();
-    for y in 0..x+1 {
-      if x-y > x {
-        break;
-      }
+  for i in all_a.iter() {
+    let top_left = coordinate_system.iter().find(|v| v.0 == i.0 - 1 && v.1 == i.1 - 1);
+    let top_right = coordinate_system.iter().find(|v| v.0 == i.0 + 1 && v.1 == i.1 - 1);
+    let bot_left = coordinate_system.iter().find(|v| v.0 == i.0 - 1 && v.1 == i.1 + 1);
+    let bot_right = coordinate_system.iter().find(|v| v.0 == i.0 + 1 && v.1 == i.1 + 1);
 
-      let chars: Vec<char> = rows[y].chars().collect();
-      diagonal = format!("{}{}", diagonal, chars[x-y].to_string());
+    if top_left.is_none() || top_right.is_none() || bot_left.is_none() || bot_right.is_none() {
+      continue;
     }
 
-    if diagonal.len() >= 4 {
-      diagonal = format!("{}{}", diagonal, "\n");
-      all_diagonals = format!("{}{}", all_diagonals, diagonal);
+    let mut match_one: String = "".to_string();
+    match_one.push(top_left.unwrap().2);
+    match_one.push('A');
+    match_one.push(bot_right.unwrap().2);
+
+    let mut match_two: String = "".to_string();
+    match_two.push(top_right.unwrap().2);
+    match_two.push('A');
+    match_two.push(bot_left.unwrap().2);
+
+    if (match_one.matches("MAS").count() > 0 || match_one.matches("SAM").count() > 0) && (match_two.matches("MAS").count() > 0 || match_two.matches("SAM").count() > 0) {
+      x_mas_counter += 1;
     }
   }
 
-  for a in all_diagonals.split("\n") {
-      println!("{a}");
-  }
-
-  // find indexes of mas
-  let indexes = all_diagonals.match_indices("mas");
-
-  // take the 'a' index
-  // find 3 char string on that index. aka the diagonal in the other direction over 'a'
-  // find match in that string on the same index as previous match
+  // 2046 right on
+  println!("Day 4 B: {}", x_mas_counter);
 }
