@@ -114,45 +114,57 @@ pub fn day2b(path: &str) {
     }
 
     if is_unsafe {
-      is_unsafe = false;
-      direction = 0;
+      let mut unsafe_counter = 0;
+      for ind in 0..row.chars().count() {
+        println!("{ind}");
 
-      let mut levels_changed: Vec<i32> = vec![];
-      for (index, a) in row.split(" ").enumerate() {
-        if index != incorrect_indexes[0] {
-          levels_changed.insert(levels_changed.len(), a.parse().unwrap());
+        is_unsafe = false;
+        direction = 0;
+
+        let mut levels_changed: Vec<i32> = vec![];
+        for (index, a) in row.split(" ").enumerate() {
+          if index != ind {
+            levels_changed.insert(levels_changed.len(), a.parse().unwrap());
+          }
+        }
+
+        for (i, level_changed) in levels_changed.iter().enumerate() {
+          let j = (i+1).clamp(0, levels_changed.len()-1);
+
+          if level_changed < &levels_changed[j] {
+            if direction != 0 && direction < 0 {
+              is_unsafe = true;
+            }
+
+            if levels_changed[j] - level_changed > 3 {
+              is_unsafe = true;
+            }
+
+            direction = (direction + 2).clamp(-1, 1);
+          }
+          else if level_changed > &levels_changed[j] {
+            if direction != 0 && direction > 0 {
+              is_unsafe = true;
+            }
+
+            if level_changed - levels_changed[j] > 3 {
+              is_unsafe = true;
+            }
+
+            direction = (direction - 2).clamp(-1, 1);
+          }
+          else if i != j {
+            is_unsafe = true;
+          }
+        }
+
+        if is_unsafe {
+          unsafe_counter += 1;
         }
       }
 
-      for (k, level_changed) in levels_changed.iter().enumerate() {
-        let l = (k+1).clamp(0, levels_changed.len()-1);
-
-        if level_changed < &levels_changed[l] {
-          if direction != 0 && direction < 0 {
-            is_unsafe = true;
-          }
-
-          if levels_changed[l] - level_changed > 3 {
-            is_unsafe = true;
-          }
-
-          direction = (direction + 2).clamp(-1, 1);
-        }
-        else if level_changed > &levels_changed[l] {
-          if direction != 0 && direction > 0 {
-            is_unsafe = true;
-          }
-
-          if level_changed - levels_changed[l] > 3 {
-            is_unsafe = true;
-          }
-
-          direction = (direction - 2).clamp(-1, 1);
-        }
-        else if k != l {
-          is_unsafe = true;
-        }
-
+      if unsafe_counter < row.chars().count() {
+        is_unsafe = false;
       }
     }
 
