@@ -116,8 +116,6 @@ pub fn day2b(path: &str) {
     if is_unsafe {
       let mut unsafe_counter = 0;
       for ind in 0..row.chars().count() {
-        println!("{ind}");
-
         is_unsafe = false;
         direction = 0;
 
