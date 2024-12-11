@@ -1,4 +1,8 @@
-pub fn day5a(path: &str) {
+pub fn day5(path: &str) {
+  day5a(path);
+}
+
+fn day5a(path: &str) {
   let input = std::fs::read_to_string(path).unwrap();
 
   let mut divided_input = input.split("\n\n");

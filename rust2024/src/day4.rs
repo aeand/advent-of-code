@@ -1,4 +1,9 @@
-pub fn day4a(path: &str) {
+pub fn day4(path: &str) {
+  day4a(path);
+  day4b(path);
+}
+
+fn day4a(path: &str) {
   let input = std::fs::read_to_string(path).unwrap();
   let size: usize = input.split("\n").count();
   let mut matches = 0;
@@ -124,7 +129,7 @@ fn check_bottom_diagonal(input: Vec<&str>, size: usize) -> String {
   return all_diagonals;
 }
 
-pub fn day4b(path: &str) {
+fn day4b(path: &str) {
   let input = std::fs::read_to_string(path).unwrap();
 
   let mut x_mas_counter = 0;

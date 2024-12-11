@@ -1,4 +1,9 @@
-pub fn day2a(path: &str) {
+pub fn day2(path: &str) {
+  day2a(path);
+  day2b(path);
+}
+
+fn day2a(path: &str) {
   let result = std::fs::read_to_string(path).unwrap();
   let input = result.split("\n").clone();
 
@@ -62,7 +67,7 @@ pub fn day2a(path: &str) {
   println!("Day 2 A: {counter}");
 }
 
-pub fn day2b(path: &str) {
+fn day2b(path: &str) {
   let result = std::fs::read_to_string(path).unwrap();
   let input = result.split("\n").clone();
 
